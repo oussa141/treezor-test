@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+<h1>Users Page</h1>
+<div class="bd-example">
+    <a href={{path('new_user')}} class="btn btn-primary">
+        <i class="fa fa-user-plus"></i> Add User
+    </a>
+</div>
+<table class="table">
+  <caption>List of users</caption>
+  <thead>
+    <tr>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Birthday Date</th>
+      <th scope="col">Active</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+        <tr> 
+            <td>{{user.getFirstName()}}</td>
+            <td>{{user.getLastName()}}</td>
+            <td>{{user.getEmail()}}</td>
+            <td>{{user.getBirthdayDate()|date("d F Y")}}</td>
+            <td>{% if user.IsActive() %} ✅ {% else %} ❌ {%endif%}</td>
+            <td>
+                <li class="list-inline-item">
+                    <a href={{ path('edit_user', {id: user.id}) }} class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                </li>
+                {% set fullNameUser = user.firstName ~ '-' ~ user.lastName %}
+                {% if user.IsActive() %}
+                    <li class="list-inline-item">
+                        <button type="button" data-toggle="modal" data-target="#confirmModal" class="btn btn-danger btn-sm rounded-0 open-Dialog" type="button" data-toggle="tooltip" data-placement="top" title="Delete User" data-user={{fullNameUser}} data-user-id={{user.id}}><i class="fa fa-trash" ></i></button>
+                    </li>
+                {%endif%}
+            </td>
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        You are about to delete the user : <span id="userName"></span>.<br>
+        Are you sure about this action ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <a id="confirmAction" href="#" class="btn btn-primary">Confirm</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    $(function(){
+        $(".open-Dialog").click(function(){
+            $("#userName").html($(this).data('user'));
+            var route = "{{ path('del_user', {'id': 'my-id-user'})|escape('js') }}";
+            $("#confirmAction").attr("href", route.replace('my-id-user',$(this).data('user-id')));
+        });
+    });
+</script>
+{% endblock %}

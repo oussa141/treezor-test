@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+
+{% set current =  app.request.get('_route')%}
+{% if current == 'edit_user' %}
+   <h1>Edit User Page </h1>
+{% else  %}
+    <h1>Add User Page </h1>
+{% endif %}
+    {{form_start(form, {attr: {'novalidate': 'novalidate'}})}}
+        
+        {{ form_label(form.last_name) }}
+        {{ form_widget(form.last_name, {'attr': {'class': 'form-control'}}) }}
+        <div class="alert-danger">{{ form_errors(form.last_name, {'attr': {'class': ''}}) }}</div>
+
+        {{ form_label(form.first_name) }}
+        {{ form_widget(form.first_name, {'attr': {'class': 'form-control'}}) }}
+        <div class="alert-danger">{{ form_errors(form.first_name, {'attr': {'class': ''}}) }}</div>
+
+        {{ form_label(form.email) }}
+        {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+        <div class="alert-danger">{{ form_errors(form.email, {'attr': {'class': ''}}) }}</div>
+
+        {{ form_label(form.birthday_date) }}
+        {{ form_widget(form.birthday_date, {'attr': {'class': 'form-control'}}) }}
+        <div class="alert-danger">{{ form_errors(form.birthday_date, {'attr': {'class': ''}}) }}</div>
+
+        <div class="text-center mt-3">
+        {% if current == 'edit_user' %}
+            <button tpe="submit" class="btn btn-success">Update</button>
+        {% else  %}
+            <button tpe="submit" class="btn btn-success">Create</button>
+        {% endif %}
+            
+        </div>
+    {{form_end(form)}}
+{% endblock %}

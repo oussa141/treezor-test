@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+
+<h1>Logs Page</h1>
+<table class="table">
+  <caption>List of logs</caption>
+  <thead>
+    <tr>
+      <th scope="col">IP</th>
+      <th scope="col">Route</th>
+      <th scope="col">Date</th>
+     
+    </tr>
+  </thead>
+  <tbody>
+    {% for log in logs %}
+        <tr> 
+            <td>{{log.ip}}</td>
+            <td>{{log.route()}}</td>
+            <td>{{log.date|date("d-m-Y")}}</td>
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
+{% endblock %}
